@@ -37,12 +37,14 @@ app.post("/", function(req,res){
     
 
 
-    url = "https://us17.api.mailchimp.com/3.0/lists/297ec8e366"
+    
     options={
+        hostname:"us17.api.mailchimp.com",
+        path:"/3.0/lists/297ec8e366",
         method:"POST",
         auth:"nitin1:" + process.env.API_KEY
     }
-    const request = https.request(url,options,function(response){
+    const request = https.request(options,function(response){
         if (response.statusCode===200) {
             res.sendFile(__dirname+"/html/success.html");
     
