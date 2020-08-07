@@ -3,9 +3,11 @@ const bodyParser = require('body-parser');
 const request = require('request');
 const https = require('https');
 const app = express();
-
+require('dotenv').config();
 app.use(express.static('public'));
 app.use(bodyParser.urlencoded({extended:true}));
+
+
 
 app.get('/', function(req,res){
     res.sendFile(__dirname+"/html/index.html");
@@ -38,7 +40,7 @@ app.post("/", function(req,res){
     url = "https://us17.api.mailchimp.com/3.0/lists/297ec8e366"
     options={
         method:"POST",
-        auth:"nitin1:c8d20354fff2b4087992c16bc190ec18-us17"
+        auth:"nitin1:" + process.env.API_KEY
     }
     const request = https.request(url,options,function(response){
         if (response.statusCode===200) {
@@ -50,7 +52,7 @@ app.post("/", function(req,res){
         response.on('data',function(data){
             console.log(JSON.parse(data));
         })
-
+        console.log(response);
     });
 
     
@@ -68,15 +70,9 @@ app.post("/failure",function(req,res){
     res.redirect("/");
 });
 
-
-app.listen(process.env.PORT || 3000, function(){
-    console.log("Running");
+const port = process.env.PORT || 3000;
+app.listen(port, function(){
+    console.log("Running at port " + port);
 })
 
 
-
-// List id 
-// 297ec8e366
-
-// API Key 
-// c8d20354fff2b4087992c16bc190ec18-us17
